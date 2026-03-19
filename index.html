@@ -1,0 +1,1054 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>飞虾队 · 技能图谱</title>
+<style>
+:root {
+  --bg: #0d0f14; --bg2: #151820; --bg3: #1c2030;
+  --border: #2a2f3e; --text: #e2e8f0; --text2: #94a3b8; --text3: #64748b;
+  --blue: #60a5fa; --blue-dim: rgba(96,165,250,0.12);
+  --green: #34d399; --green-dim: rgba(52,211,153,0.12);
+  --purple: #a78bfa; --purple-dim: rgba(167,139,250,0.12);
+  --orange: #fb923c; --orange-dim: rgba(251,146,60,0.12);
+  --red: #f87171; --red-dim: rgba(248,113,113,0.12);
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body { background:var(--bg); color:var(--text); font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif; line-height:1.6; }
+
+nav {
+  position:sticky; top:0; z-index:100;
+  background:rgba(13,15,20,0.92); backdrop-filter:blur(12px);
+  border-bottom:1px solid var(--border);
+  padding:0 2rem; display:flex; align-items:center; gap:1.5rem; height:56px; overflow-x:auto;
+}
+.nav-brand { font-weight:700; font-size:1.1rem; white-space:nowrap; color:var(--text); text-decoration:none; }
+.nav-brand span { opacity:.5; margin:0 .4rem; }
+nav a.member-link {
+  white-space:nowrap; text-decoration:none; font-size:.85rem;
+  color:var(--text2); padding:.25rem .6rem; border-radius:6px; transition:all .2s;
+}
+nav a.member-link:hover { color:var(--text); background:var(--bg3); }
+.nav-spacer { flex:1; }
+.nav-badge { white-space:nowrap; font-size:.78rem; color:var(--text3); border:1px solid var(--border); border-radius:20px; padding:.2rem .7rem; }
+
+.hero { text-align:center; padding:5rem 2rem 3.5rem; background:linear-gradient(180deg,#0d1222 0%,var(--bg) 100%); }
+.hero-tag {
+  display:inline-block; font-size:.78rem; letter-spacing:.12em; text-transform:uppercase;
+  color:var(--blue); background:var(--blue-dim); border:1px solid rgba(96,165,250,.25);
+  padding:.3rem .9rem; border-radius:20px; margin-bottom:1.5rem;
+}
+.hero h1 { font-size:clamp(2rem,5vw,3.2rem); font-weight:800; letter-spacing:-.02em; margin-bottom:.8rem; }
+.hero h1 span { background:linear-gradient(135deg,#60a5fa,#a78bfa,#34d399); -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
+.hero-sub { font-size:1.05rem; color:var(--text2); max-width:540px; margin:0 auto 2.5rem; }
+.stats { display:flex; justify-content:center; gap:2rem; flex-wrap:wrap; }
+.stat { text-align:center; }
+.stat-num { font-size:2rem; font-weight:800; }
+.stat-label { font-size:.8rem; color:var(--text3); margin-top:.15rem; }
+
+.chips { display:flex; justify-content:center; gap:.75rem; flex-wrap:wrap; padding:2rem 2rem 0; }
+.chip {
+  display:flex; align-items:center; gap:.4rem;
+  padding:.4rem 1rem; border-radius:20px; font-size:.85rem; font-weight:600;
+  text-decoration:none; border:1px solid transparent; transition:all .2s;
+}
+.chip.blue   { color:var(--blue);   background:var(--blue-dim);   border-color:rgba(96,165,250,.25); }
+.chip.green  { color:var(--green);  background:var(--green-dim);  border-color:rgba(52,211,153,.25); }
+.chip.purple { color:var(--purple); background:var(--purple-dim); border-color:rgba(167,139,250,.25); }
+.chip.orange { color:var(--orange); background:var(--orange-dim); border-color:rgba(251,146,60,.25); }
+.chip.red    { color:var(--red);    background:var(--red-dim);    border-color:rgba(248,113,113,.25); }
+.chip:hover  { filter:brightness(1.2); transform:translateY(-1px); }
+
+.section { padding:3rem 2rem; max-width:1200px; margin:0 auto; }
+.section-header { display:flex; align-items:center; gap:1rem; margin-bottom:.6rem; }
+.section-dot { width:12px; height:12px; border-radius:50%; flex-shrink:0; }
+.section-title { font-size:1.6rem; font-weight:800; }
+.section-role { font-size:.9rem; color:var(--text2); margin-bottom:2rem; padding-left:22px; }
+
+.subsection { margin-bottom:2rem; }
+.subsection-title {
+  font-size:.75rem; letter-spacing:.1em; text-transform:uppercase;
+  color:var(--text3); margin-bottom:1rem; padding-bottom:.4rem;
+  border-bottom:1px solid var(--border);
+}
+
+.cards { display:grid; grid-template-columns:repeat(auto-fill,minmax(270px,1fr)); gap:1rem; }
+.card {
+  background:var(--bg2); border:1px solid var(--border); border-radius:12px;
+  padding:1.1rem 1.2rem; transition:all .2s; position:relative; overflow:hidden;
+  cursor:pointer;
+}
+.card::before { content:''; position:absolute; top:0; left:0; right:0; height:2px; opacity:0; transition:opacity .2s; }
+.card:hover { transform:translateY(-2px); }
+.card:hover::before { opacity:1; }
+.card-top { display:flex; align-items:flex-start; justify-content:space-between; gap:.5rem; margin-bottom:.5rem; }
+.card-name { font-weight:700; font-size:.95rem; }
+.card-badge { font-size:.7rem; padding:.15rem .5rem; border-radius:6px; white-space:nowrap; flex-shrink:0; font-weight:600; }
+.card-desc { font-size:.83rem; color:var(--text2); line-height:1.5; margin-bottom:.5rem; }
+.card-highlight { font-size:.75rem; color:var(--text3); }
+.card-click-hint { font-size:.72rem; color:var(--text3); margin-top:.6rem; opacity:0; transition:opacity .2s; }
+.card:hover .card-click-hint { opacity:1; }
+
+.blue-theme   .card::before { background:var(--blue); }
+.blue-theme   .card:hover { border-color:rgba(96,165,250,.4); box-shadow:0 4px 20px rgba(96,165,250,.08); }
+.blue-theme   .card-badge { color:var(--blue); background:var(--blue-dim); }
+.green-theme  .card::before { background:var(--green); }
+.green-theme  .card:hover { border-color:rgba(52,211,153,.4); box-shadow:0 4px 20px rgba(52,211,153,.08); }
+.green-theme  .card-badge { color:var(--green); background:var(--green-dim); }
+.purple-theme .card::before { background:var(--purple); }
+.purple-theme .card:hover { border-color:rgba(167,139,250,.4); box-shadow:0 4px 20px rgba(167,139,250,.08); }
+.purple-theme .card-badge { color:var(--purple); background:var(--purple-dim); }
+.orange-theme .card::before { background:var(--orange); }
+.orange-theme .card:hover { border-color:rgba(251,146,60,.4); box-shadow:0 4px 20px rgba(251,146,60,.08); }
+.orange-theme .card-badge { color:var(--orange); background:var(--orange-dim); }
+.red-theme    .card::before { background:var(--red); }
+.red-theme    .card:hover { border-color:rgba(248,113,113,.4); box-shadow:0 4px 20px rgba(248,113,113,.08); }
+.red-theme    .card-badge { color:var(--red); background:var(--red-dim); }
+
+/* MODAL */
+.modal-overlay {
+  display:none; position:fixed; inset:0; z-index:1000;
+  background:rgba(0,0,0,.7); backdrop-filter:blur(6px);
+  align-items:center; justify-content:center; padding:1.5rem;
+}
+.modal-overlay.open { display:flex; }
+.modal {
+  background:var(--bg2); border:1px solid var(--border); border-radius:16px;
+  width:100%; max-width:520px; max-height:85vh; overflow-y:auto;
+  position:relative; animation:modalIn .2s ease;
+}
+@keyframes modalIn { from { opacity:0; transform:translateY(12px) scale(.97); } to { opacity:1; transform:none; } }
+.modal-header {
+  padding:1.4rem 1.5rem 0;
+  display:flex; align-items:flex-start; justify-content:space-between; gap:1rem;
+}
+.modal-title-row { display:flex; align-items:center; gap:.6rem; flex-wrap:wrap; }
+.modal-name { font-size:1.2rem; font-weight:800; }
+.modal-badge { font-size:.75rem; padding:.2rem .6rem; border-radius:8px; font-weight:600; }
+.modal-close {
+  background:var(--bg3); border:1px solid var(--border); color:var(--text2);
+  border-radius:8px; width:32px; height:32px; cursor:pointer; font-size:1rem;
+  display:flex; align-items:center; justify-content:center; flex-shrink:0; transition:all .15s;
+}
+.modal-close:hover { color:var(--text); border-color:#4a5068; }
+.modal-body { padding:1.2rem 1.5rem 1.5rem; }
+.modal-desc { font-size:.9rem; color:var(--text2); line-height:1.7; margin-bottom:1.2rem; }
+.modal-section-label { font-size:.7rem; letter-spacing:.1em; text-transform:uppercase; color:var(--text3); margin-bottom:.5rem; }
+.modal-detail {
+  background:var(--bg3); border:1px solid var(--border); border-radius:10px;
+  padding:1rem; font-size:.83rem; color:var(--text2); line-height:1.6; margin-bottom:1.2rem;
+}
+.modal-detail li { margin-left:1rem; margin-bottom:.25rem; }
+.copy-row { display:flex; gap:.6rem; align-items:stretch; }
+.copy-box {
+  flex:1; background:var(--bg); border:1px solid var(--border); border-radius:8px;
+  padding:.55rem .8rem; font-family:'SF Mono',monospace; font-size:.8rem; color:var(--text2);
+  white-space:pre-wrap; word-break:break-all;
+}
+.copy-btn {
+  background:var(--blue-dim); border:1px solid rgba(96,165,250,.3); color:var(--blue);
+  border-radius:8px; padding:.5rem .9rem; font-size:.82rem; font-weight:600;
+  cursor:pointer; white-space:nowrap; transition:all .15s;
+}
+.copy-btn:hover { background:rgba(96,165,250,.2); }
+.copy-btn.copied { color:var(--green); background:var(--green-dim); border-color:rgba(52,211,153,.3); }
+
+.divider { border:none; border-top:1px solid var(--border); margin:0 2rem; }
+
+.tag-section { padding:3rem 2rem; max-width:1200px; margin:0 auto; }
+.tag-section h2 { font-size:1.2rem; font-weight:700; margin-bottom:1.5rem; color:var(--text2); }
+.tag-grid { display:flex; flex-wrap:wrap; gap:.75rem; }
+.tag-item {
+  display:flex; align-items:center; gap:.5rem;
+  background:var(--bg2); border:1px solid var(--border); border-radius:8px;
+  padding:.5rem 1rem; font-size:.82rem;
+}
+.tag-dot { width:8px; height:8px; border-radius:50%; flex-shrink:0; }
+.tag-label { font-weight:600; margin-right:.3rem; }
+.tag-skills { color:var(--text3); }
+
+footer { text-align:center; padding:2rem; color:var(--text3); font-size:.82rem; border-top:1px solid var(--border); margin-top:2rem; }
+
+/* STORY */
+.story-section { padding:4rem 2rem; max-width:960px; margin:0 auto; }
+.story-label {
+  font-size:.75rem; letter-spacing:.12em; text-transform:uppercase;
+  color:var(--blue); margin-bottom:.8rem;
+}
+.story-section h2 { font-size:1.5rem; font-weight:800; margin-bottom:.6rem; }
+.story-section .sub { font-size:.9rem; color:var(--text2); margin-bottom:2.5rem; }
+.timeline { display:flex; flex-direction:column; gap:0; }
+.tl-item { display:flex; gap:1.5rem; position:relative; }
+.tl-item:not(:last-child) .tl-line { position:absolute; left:11px; top:28px; bottom:-1px; width:2px; background:var(--border); }
+.tl-dot-wrap { flex-shrink:0; width:24px; display:flex; flex-direction:column; align-items:center; padding-top:4px; }
+.tl-dot { width:12px; height:12px; border-radius:50%; border:2px solid; flex-shrink:0; }
+.tl-body { padding-bottom:2.2rem; flex:1; }
+.tl-time { font-size:.75rem; color:var(--text3); margin-bottom:.25rem; }
+.tl-title { font-weight:700; font-size:.95rem; margin-bottom:.35rem; }
+.tl-desc { font-size:.85rem; color:var(--text2); line-height:1.65; }
+
+/* TIPS */
+.tips-section { padding:4rem 2rem; max-width:1100px; margin:0 auto; }
+.tips-section h2 { font-size:1.5rem; font-weight:800; margin-bottom:.5rem; }
+.tips-section .sub { font-size:.9rem; color:var(--text2); margin-bottom:2.5rem; }
+.tips-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(310px,1fr)); gap:1.2rem; }
+.tip-card {
+  background:var(--bg2); border:1px solid var(--border); border-radius:14px;
+  padding:1.4rem 1.5rem; transition:border-color .2s;
+}
+.tip-card:hover { border-color:#3a4050; }
+.tip-top { display:flex; align-items:center; gap:.75rem; margin-bottom:.75rem; }
+.tip-icon { font-size:1.5rem; line-height:1; }
+.tip-num { font-size:.75rem; color:var(--text3); font-weight:600; }
+.tip-title { font-weight:800; font-size:1rem; }
+.tip-desc { font-size:.85rem; color:var(--text2); line-height:1.7; }
+.tip-quote {
+  margin-top:.8rem; padding:.6rem .9rem;
+  background:var(--bg3); border-left:3px solid var(--border);
+  border-radius:0 8px 8px 0; font-size:.82rem; color:var(--text3); font-style:italic;
+}
+</style>
+</head>
+<body>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modalOverlay" onclick="closeModal(event)">
+  <div class="modal" id="modal">
+    <div class="modal-header">
+      <div class="modal-title-row">
+        <span class="modal-name" id="mName"></span>
+        <span class="modal-badge" id="mBadge"></span>
+      </div>
+      <button class="modal-close" onclick="hideModal()">✕</button>
+    </div>
+    <div class="modal-body">
+      <p class="modal-desc" id="mDesc"></p>
+      <div class="modal-section-label">技术细节</div>
+      <div class="modal-detail" id="mDetail"></div>
+      <div class="modal-section-label">复制 / 安装</div>
+      <div class="copy-row">
+        <div class="copy-box" id="mCopy"></div>
+        <button class="copy-btn" id="copyBtn" onclick="doCopy()">复制</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<nav>
+  <a class="nav-brand" href="#">🦐 飞虾队<span>·</span>技能图谱</a>
+  <a class="member-link" href="#story">📖 故事</a>
+  <a class="member-link" href="#aoxia">🦐 鳌虾</a>
+  <a class="member-link" href="#tianxia">🍤 甜虾</a>
+  <a class="member-link" href="#longxia">🦞 龙虾</a>
+  <a class="member-link" href="#maixia">🌾 麦虾</a>
+  <a class="member-link" href="#huxia">🐯 虎虾</a>
+  <a class="member-link" href="#tips">💡 经验</a>
+  <div class="nav-spacer"></div>
+  <span class="nav-badge">v1.0 · 2026-03-19</span>
+</nav>
+
+<section class="hero">
+  <div class="hero-tag">Flying Shrimp Squad</div>
+  <h1>飞虾队 <span>技能图谱</span></h1>
+  <p class="hero-sub">5只专业虾 · 全栈覆盖投资、情报、内容、知识、运维<br>基于 OpenClaw 构建的实战多Agent协作系统</p>
+  <div class="stats">
+    <div class="stat"><div class="stat-num" style="color:var(--blue)">5</div><div class="stat-label">专属智能体</div></div>
+    <div class="stat"><div class="stat-num" style="color:var(--green)">74</div><div class="stat-label">技能/任务节点</div></div>
+    <div class="stat"><div class="stat-num" style="color:var(--purple)">24h</div><div class="stat-label">全天候运行</div></div>
+    <div class="stat"><div class="stat-num" style="color:var(--orange)">~$300</div><div class="stat-label">月度算力成本</div></div>
+  </div>
+</section>
+
+<div class="chips">
+  <a class="chip blue"   href="#aoxia">🦐 鳌虾 · 协调指挥</a>
+  <a class="chip green"  href="#tianxia">🍤 甜虾 · 投资写作</a>
+  <a class="chip purple" href="#longxia">🦞 龙虾 · 国际情报</a>
+  <a class="chip orange" href="#maixia">🌾 麦虾 · 知识学习</a>
+  <a class="chip red"    href="#huxia">🐯 虎虾 · 国内情报</a>
+</div>
+
+<!-- STORY -->
+<section class="story-section" id="story">
+  <div class="story-label">Origin Story</div>
+  <h2>🦐 我是怎么养出这群虾的</h2>
+  <p class="sub">从一只什么都干的"超级虾"，到5只各司其职的专业团队 — 这是一段边踩坑边进化的真实历程。</p>
+  <div class="timeline">
+
+    <div class="tl-item">
+      <div class="tl-dot-wrap">
+        <div class="tl-dot" style="border-color:var(--blue);background:var(--blue-dim)"></div>
+        <div class="tl-line"></div>
+      </div>
+      <div class="tl-body">
+        <div class="tl-time">2026年2月初 · 春节期间</div>
+        <div class="tl-title">第一只虾诞生，密集开发期</div>
+        <div class="tl-desc">利用春节假期密集投入，从零开始搭建第一个 Claude Agent。最初只有一只"超级虾"，什么都让它干：抓新闻、写报告、分析股票、管文件。结果就是样样都会、样样稀烂——模型上下文塞满了，输出质量很不稳定，一旦出错根本不知道是哪个环节的问题。</div>
+      </div>
+    </div>
+
+    <div class="tl-item">
+      <div class="tl-dot-wrap">
+        <div class="tl-dot" style="border-color:var(--green);background:var(--green-dim)"></div>
+        <div class="tl-line"></div>
+      </div>
+      <div class="tl-body">
+        <div class="tl-time">2026年2月中</div>
+        <div class="tl-title">按专业拆虾</div>
+        <div class="tl-desc">意识到问题的本质：一个 Agent 的 system prompt 越长，它的"个性"就越模糊。于是开始拆分——投资的归甜虾，海外情报的归龙虾，知识管理的归麦虾。每只虾只有一个 persona，一套工具，一类任务。质量立刻上来了。</div>
+      </div>
+    </div>
+
+    <div class="tl-item">
+      <div class="tl-dot-wrap">
+        <div class="tl-dot" style="border-color:var(--purple);background:var(--purple-dim)"></div>
+        <div class="tl-line"></div>
+      </div>
+      <div class="tl-body">
+        <div class="tl-time">2026年2月下旬</div>
+        <div class="tl-title">踩坑：API 过期、消息丢失、巡检误判</div>
+        <div class="tl-desc">规模一大，问题接踵而来。API Key 悄悄过期，Agent 默默 fallback 到备用模型，输出质量下降好几天才被发现。网关重启导致 hooks 消息全部丢失，任务以为派出去了，其实根本没执行。还有巡检脚本在 21:00 判"任务失败"，文件其实 21:02 才刚生成……</div>
+      </div>
+    </div>
+
+    <div class="tl-item">
+      <div class="tl-dot-wrap">
+        <div class="tl-dot" style="border-color:var(--orange);background:var(--orange-dim)"></div>
+        <div class="tl-line"></div>
+      </div>
+      <div class="tl-body">
+        <div class="tl-time">2026年3月</div>
+        <div class="tl-title">建立回音机制</div>
+        <div class="tl-desc">吸取教训，设计了三层保障：① 统一 master key 文件，所有 Agent 同源同步；② AgentFeedback 目录作为回音总线，每虾完成任务必须写回音文件；③ 每日巡检 + 04:00 备份检查双保险。"事事有回音"成为队规第一条。</div>
+      </div>
+    </div>
+
+    <div class="tl-item">
+      <div class="tl-dot-wrap">
+        <div class="tl-dot" style="border-color:var(--green);background:var(--green-dim)"></div>
+      </div>
+      <div class="tl-body">
+        <div class="tl-time">现在</div>
+        <div class="tl-title">5只虾，每日 30+ 自动产出</div>
+        <div class="tl-desc">A股/港股/美股分析、全球AI新闻、FMCG情报、4类知识卡片……全部自动运行，每天凌晨的飞虾队日报是第一个检查点。团队月成本约 $300，产出密度远超同等人力成本。这套系统还在持续进化中。</div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- 鳌虾 -->
+<section class="section blue-theme" id="aoxia">
+  <div class="section-header">
+    <div class="section-dot" style="background:var(--blue)"></div>
+    <div class="section-title">🦐 鳌虾包 · AoXia</div>
+  </div>
+  <div class="section-role">飞虾队大脑 — 任务调度 · 质量巡检 · 对外沟通 · 结果回音</div>
+  <div class="cards">
+    <div class="card" data-key="feishu-bridge">
+      <div class="card-top"><span class="card-name">飞书桥接</span><span class="card-badge">通信</span></div>
+      <div class="card-desc">连接飞书IM与Claude，实现自然语言指令下发</div>
+      <div class="card-highlight">支持图文/语音/文件，多Bot隔离</div>
+      <div class="card-click-hint">点击查看详情 →</div>
+    </div>
+    <div class="card" data-key="daily-inspect">
+      <div class="card-top"><span class="card-name">每日巡检</span><span class="card-badge">监控</span></div>
+      <div class="card-desc">每日01:00自动检查全队产出质量和文件完整性</div>
+      <div class="card-highlight">文件&lt;1KB自动标记失败，异常实时告警</div>
+      <div class="card-click-hint">点击查看详情 →</div>
+    </div>
+    <div class="card" data-key="backup-check">
+      <div class="card-top"><span class="card-name">备份检查</span><span class="card-badge">运维</span></div>
+      <div class="card-desc">每日04:00验证各Agent备份状态，异常自动催促</div>
+      <div class="card-highlight">三天轮换保留策略，全自动化</div>
+      <div class="card-click-hint">点击查看详情 →</div>
+    </div>
+    <div class="card" data-key="hooks-dispatch">
+      <div class="card-top"><span class="card-name">Hooks 调度</span><span class="card-badge">协调</span></div>
+      <div class="card-desc">通过HTTP hooks向各Agent下发任务指令</div>
+      <div class="card-highlight">fire-and-forget + 回音确认双保险</div>
+      <div class="card-click-hint">点击查看详情 →</div>
+    </div>
+    <div class="card" data-key="agent-feedback">
+      <div class="card-top"><span class="card-name">AgentFeedback 回音总线</span><span class="card-badge">协调</span></div>
+      <div class="card-desc">云端共享目录作为回音总线，跟踪各Agent执行结果</div>
+      <div class="card-highlight">不依赖IM bot-to-bot，结构稳定</div>
+      <div class="card-click-hint">点击查看详情 →</div>
+    </div>
+    <div class="card" data-key="gamma-deck">
+      <div class="card-top"><span class="card-name">Gamma Deck 生成</span><span class="card-badge">内容</span></div>
+      <div class="card-desc">调用Gamma API自动生成演示文稿并导出pptx</div>
+      <div class="card-highlight">已验证完整链路，支持暗色主题</div>
+      <div class="card-click-hint">点击查看详情 →</div>
+    </div>
+    <div class="card" data-key="squad-daily">
+      <div class="card-top"><span class="card-name">飞虾队日报</span><span class="card-badge">报告</span></div>
+      <div class="card-desc">每日01:00汇总全队工作情况，自动生成结构化报告</div>
+      <div class="card-highlight">覆盖全Agent任务执行状态</div>
+      <div class="card-click-hint">点击查看详情 →</div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- 甜虾 -->
+<section class="section green-theme" id="tianxia">
+  <div class="section-header">
+    <div class="section-dot" style="background:var(--green)"></div>
+    <div class="section-title">🍤 甜虾包 · TianXia</div>
+  </div>
+  <div class="section-role">投资分析师 + 内容创作者 — 主力模型 gpt-5.4 · A股/港股/美股全覆盖</div>
+
+  <div class="subsection">
+    <div class="subsection-title">📈 投资分析</div>
+    <div class="cards">
+      <div class="card" data-key="a-share">
+        <div class="card-top"><span class="card-name">A股收盘分析</span><span class="card-badge">投资</span></div>
+        <div class="card-desc">每日15:30后生成A股收盘总结，含持仓盈亏分析</div>
+        <div class="card-highlight">接Tushare API，支持多账户持仓跟踪</div>
+        <div class="card-click-hint">点击查看详情 →</div>
+      </div>
+      <div class="card" data-key="hk-share">
+        <div class="card-top"><span class="card-name">港股收盘分析</span><span class="card-badge">投资</span></div>
+        <div class="card-desc">港股交易日收盘后生成港股总结，含持仓表现</div>
+        <div class="card-highlight">自动识别交易日，非交易日跳过</div>
+        <div class="card-click-hint">点击查看详情 →</div>
+      </div>
+      <div class="card" data-key="us-share">
+        <div class="card-top"><span class="card-name">美股雷达</span><span class="card-badge">投资</span></div>
+        <div class="card-desc">每日美股收盘后生成持仓雷达报告</div>
+        <div class="card-highlight">接Yahoo Finance，含VIX/宏观分析</div>
+        <div class="card-click-hint">点击查看详情 →</div>
+      </div>
+      <div class="card" data-key="invest-weekly">
+        <div class="card-top"><span class="card-name">投资周报</span><span class="card-badge">投资</span></div>
+        <div class="card-desc">每周五生成跨市场投资组合综合分析</div>
+        <div class="card-highlight">A股+港股+美股联动，多维度评估</div>
+        <div class="card-click-hint">点击查看详情 →</div>
+      </div>
+      <div class="card" data-key="portfolio">
+        <div class="card-top"><span class="card-name">持仓档案管理</span><span class="card-badge">投资</span></div>
+        <div class="card-desc">维护完整持仓档案（成本价/账户/定投计划）</div>
+        <div class="card-highlight">结构化markdown，支持自动解析</div>
+        <div class="card-click-hint">点击查看详情 →</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="subsection">
+    <div class="subsection-title">🕵️ 情报抓取</div>
+    <div class="cards">
+      <div class="card" data-key="gartner">
+        <div class="card-top"><span class="card-name">Gartner 抓取 v6</span><span class="card-badge">情报</span></div>
+        <div class="card-desc">自动抓取Gartner报告全文，内置反封号策略</div>
+        <div class="card-highlight">CDP动态连接+人类阅读模拟+随机延时</div>
+        <div class="card-click-hint">点击查看详情 →</div>
+      </div>
+      <div class="card" data-key="comint">
+        <div class="card-top"><span class="card-name">竞情分析</span><span class="card-badge">情报</span></div>
+        <div class="card-desc">抓取指定公司竞品情报并生成分析报告</div>
+        <div class="card-highlight">Metaso+Brave双引擎，支持中英文</div>
+        <div class="card-click-hint">点击查看详情 →</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="subsection">
+    <div class="subsection-title">✍️ 内容创作 · OpenClaw Skills</div>
+    <div class="cards">
+      <div class="card" data-key="humanize">
+        <div class="card-top"><span class="card-name">humanize-chinese</span><span class="card-badge">写作</span></div>
+        <div class="card-desc">将AI生成的中文内容人格化，去除AI味</div>
+        <div class="card-highlight">口语化、有温度、符合中文语感</div>
+        <div class="card-click-hint">点击查看详情 →</div>
+      </div>
+      <div class="card" data-key="pptx">
+        <div class="card-top"><span class="card-name">pptx</span><span class="card-badge">演示</span></div>
+        <div class="card-desc">用python-pptx生成结构化PPT文件</div>
+        <div class="card-highlight">本地生成，适合内容骨架搭建</div>
+        <div class="card-click-hint">点击查看详情 →</div>
+      </div>
+      <div class="card" data-key="summary-report">
+        <div class="card-top"><span class="card-name">summary-report</span><span class="card-badge">报告</span></div>
+        <div class="card-desc">将长文档/多文件智能摘要成结构化报告</div>
+        <div class="card-highlight">支持多文件合并摘要</div>
+        <div class="card-click-hint">点击查看详情 →</div>
+      </div>
+      <div class="card" data-key="pdf">
+        <div class="card-top"><span class="card-name">pdf</span><span class="card-badge">文档</span></div>
+        <div class="card-desc">读取和分析PDF文件内容</div>
+        <div class="card-highlight">支持多页、表格、扫描件</div>
+        <div class="card-click-hint">点击查看详情 →</div>
+      </div>
+      <div class="card" data-key="xlsx">
+        <div class="card-top"><span class="card-name">xlsx</span><span class="card-badge">数据</span></div>
+        <div class="card-desc">读写Excel文件，支持数据分析和图表生成</div>
+        <div class="card-highlight">适合财务/投资数据处理</div>
+        <div class="card-click-hint">点击查看详情 →</div>
+      </div>
+      <div class="card" data-key="self-improve">
+        <div class="card-top"><span class="card-name">self-improving-agent</span><span class="card-badge">进化</span></div>
+        <div class="card-desc">自动分析任务执行质量并优化自身prompt</div>
+        <div class="card-highlight">每次任务后自我复盘，持续进化</div>
+        <div class="card-click-hint">点击查看详情 →</div>
+      </div>
+      <div class="card" data-key="skill-vetter">
+        <div class="card-top"><span class="card-name">skill-vetter</span><span class="card-badge">管理</span></div>
+        <div class="card-desc">评估和验证新技能的质量和安全性</div>
+        <div class="card-highlight">安装前自动审查，防劣质Skill</div>
+        <div class="card-click-hint">点击查看详情 →</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- 龙虾 -->
+<section class="section purple-theme" id="longxia">
+  <div class="section-header">
+    <div class="section-dot" style="background:var(--purple)"></div>
+    <div class="section-title">🦞 龙虾包 · LongXia</div>
+  </div>
+  <div class="section-role">海外情报员 — 主力模型 Kimi K2.5 · 部署于海外云服务器 · Manus驱动</div>
+
+  <div class="subsection">
+    <div class="subsection-title">🌍 每日情报任务</div>
+    <div class="cards">
+      <div class="card" data-key="fmcg-daily">
+        <div class="card-top"><span class="card-name">FMCG 简报 L01</span><span class="card-badge">每日</span></div>
+        <div class="card-desc">全球FMCG行业早间情报摘要</div>
+        <div class="card-highlight">覆盖宝洁/联合利华/雀巢等巨头动态</div>
+        <div class="card-click-hint">点击查看详情 →</div>
+      </div>
+      <div class="card" data-key="world-news">
+        <div class="card-top"><span class="card-name">全球新闻 L02</span><span class="card-badge">每日</span></div>
+        <div class="card-desc">全球重要新闻搜索与摘要</div>
+        <div class="card-highlight">中英文双语，AI视角筛选</div>
+        <div class="card-click-hint">点击查看详情 →</div>
+      </div>
+      <div class="card" data-key="ai-news">
+        <div class="card-top"><span class="card-name">AI 新闻 L03</span><span class="card-badge">每日</span></div>
+        <div class="card-desc">AI行业最新动态聚合</div>
+        <div class="card-highlight">聚焦大模型/Agent/产品发布</div>
+        <div class="card-click-hint">点击查看详情 →</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="subsection">
+    <div class="subsection-title">📅 周专项任务</div>
+    <div class="cards">
+      <div class="card" data-key="palantir">
+        <div class="card-top"><span class="card-name">Palantir 本体情报 L05</span><span class="card-badge">周二</span></div>
+        <div class="card-desc">深度分析Palantir的Ontology战略和产品进展</div>
+        <div class="card-highlight">覆盖AIP/Foundry/Gotham产品线</div>
+        <div class="card-click-hint">点击查看详情 →</div>
+      </div>
+      <div class="card" data-key="ai-fmcg">
+        <div class="card-top"><span class="card-name">AI+FMCG 分析 L06</span><span class="card-badge">周日</span></div>
+        <div class="card-desc">AI技术在FMCG行业落地案例分析</div>
+        <div class="card-highlight">供应链/营销/消费者洞察等场景</div>
+        <div class="card-click-hint">点击查看详情 →</div>
+      </div>
+      <div class="card" data-key="ai-paper">
+        <div class="card-top"><span class="card-name">AI 论文分析 L07</span><span class="card-badge">周三</span></div>
+        <div class="card-desc">最新AI学术论文摘要和影响分析</div>
+        <div class="card-highlight">追踪前沿技术趋势</div>
+        <div class="card-click-hint">点击查看详情 →</div>
+      </div>
+      <div class="card" data-key="ai-interview">
+        <div class="card-top"><span class="card-name">AI 巨头访谈 L08</span><span class="card-badge">周六</span></div>
+        <div class="card-desc">整理AI领袖播客/访谈核心观点</div>
+        <div class="card-highlight">覆盖Altman/LeCun/Bengio等</div>
+        <div class="card-click-hint">点击查看详情 →</div>
+      </div>
+      <div class="card" data-key="github-trend">
+        <div class="card-top"><span class="card-name">GitHub 趋势 L09</span><span class="card-badge">周四</span></div>
+        <div class="card-desc">开源AI项目趋势和热门工具追踪</div>
+        <div class="card-highlight">追踪开发者社区动向</div>
+        <div class="card-click-hint">点击查看详情 →</div>
+      </div>
+      <div class="card" data-key="ai-kol">
+        <div class="card-top"><span class="card-name">AI 意见领袖 L10</span><span class="card-badge">周五</span></div>
+        <div class="card-desc">整理海外AI KOL最新观点和预测</div>
+        <div class="card-highlight">Twitter/LinkedIn多平台聚合</div>
+        <div class="card-click-hint">点击查看详情 →</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="subsection">
+    <div class="subsection-title">🔧 OpenClaw Skills</div>
+    <div class="cards">
+      <div class="card" data-key="agent-browser">
+        <div class="card-top"><span class="card-name">agent-browser</span><span class="card-badge">浏览器</span></div>
+        <div class="card-desc">控制浏览器执行复杂网页交互任务</div>
+        <div class="card-click-hint">点击查看详情 →</div>
+      </div>
+      <div class="card" data-key="feishu-im">
+        <div class="card-top"><span class="card-name">feishu-im</span><span class="card-badge">通信</span></div>
+        <div class="card-desc">飞书消息发送和IM集成</div>
+        <div class="card-click-hint">点击查看详情 →</div>
+      </div>
+      <div class="card" data-key="tavily">
+        <div class="card-top"><span class="card-name">tavily-search</span><span class="card-badge">搜索</span></div>
+        <div class="card-desc">Tavily API深度网络搜索</div>
+        <div class="card-click-hint">点击查看详情 →</div>
+      </div>
+      <div class="card" data-key="wechat-extractor">
+        <div class="card-top"><span class="card-name">wechat-article-extractor</span><span class="card-badge">内容</span></div>
+        <div class="card-desc">微信公众号文章内容提取</div>
+        <div class="card-click-hint">点击查看详情 →</div>
+      </div>
+      <div class="card" data-key="summarize">
+        <div class="card-top"><span class="card-name">summarize</span><span class="card-badge">内容</span></div>
+        <div class="card-desc">URL/播客/文件智能摘要</div>
+        <div class="card-click-hint">点击查看详情 →</div>
+      </div>
+      <div class="card" data-key="github-skill">
+        <div class="card-top"><span class="card-name">github</span><span class="card-badge">开发</span></div>
+        <div class="card-desc">GitHub操作（PR/Issue/代码搜索）</div>
+        <div class="card-click-hint">点击查看详情 →</div>
+      </div>
+      <div class="card" data-key="obsidian">
+        <div class="card-top"><span class="card-name">obsidian</span><span class="card-badge">笔记</span></div>
+        <div class="card-desc">Obsidian知识库读写和管理</div>
+        <div class="card-click-hint">点击查看详情 →</div>
+      </div>
+      <div class="card" data-key="find-skills">
+        <div class="card-top"><span class="card-name">find-skills</span><span class="card-badge">管理</span></div>
+        <div class="card-desc">从ClawHub发现和安装新技能</div>
+        <div class="card-click-hint">点击查看详情 →</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- 麦虾 -->
+<section class="section orange-theme" id="maixia">
+  <div class="section-header">
+    <div class="section-dot" style="background:var(--orange)"></div>
+    <div class="section-title">🌾 麦虾包 · MaiXia</div>
+  </div>
+  <div class="section-role">知识管理员 — 国内云服务器 · 主力模型 ArkCode · 每日知识卡片生产线</div>
+
+  <div class="subsection">
+    <div class="subsection-title">📚 知识卡片生产线（每日定时）</div>
+    <div class="cards">
+      <div class="card" data-key="linux-card">
+        <div class="card-top"><span class="card-name">Linux 知识卡</span><span class="card-badge">每日</span></div>
+        <div class="card-desc">生成Linux运维知识点精华卡片</div>
+        <div class="card-highlight">每日1卡，系统化学习路径</div>
+        <div class="card-click-hint">点击查看详情 →</div>
+      </div>
+      <div class="card" data-key="psych-card">
+        <div class="card-top"><span class="card-name">心理学知识卡</span><span class="card-badge">每日</span></div>
+        <div class="card-desc">生成心理学概念和应用卡片</div>
+        <div class="card-highlight">锚定效应/认知偏差等实用内容</div>
+        <div class="card-click-hint">点击查看详情 →</div>
+      </div>
+      <div class="card" data-key="security-card">
+        <div class="card-top"><span class="card-name">信息安全知识卡</span><span class="card-badge">每日</span></div>
+        <div class="card-desc">生成网络安全知识点卡片</div>
+        <div class="card-highlight">社会工程学/渗透测试等</div>
+        <div class="card-click-hint">点击查看详情 →</div>
+      </div>
+      <div class="card" data-key="phil-card">
+        <div class="card-top"><span class="card-name">哲学知识卡</span><span class="card-badge">每日</span></div>
+        <div class="card-desc">生成哲学思想精华卡片</div>
+        <div class="card-highlight">柏拉图/尼采/实用主义等</div>
+        <div class="card-click-hint">点击查看详情 →</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="subsection">
+    <div class="subsection-title">🔧 OpenClaw Skills</div>
+    <div class="cards">
+      <div class="card" data-key="manus-task">
+        <div class="card-top"><span class="card-name">manus-task</span><span class="card-badge">自动化</span></div>
+        <div class="card-desc">Manus AI任务发布和结果下载管道</div>
+        <div class="card-click-hint">点击查看详情 →</div>
+      </div>
+      <div class="card" data-key="agent-browser2">
+        <div class="card-top"><span class="card-name">agent-browser</span><span class="card-badge">浏览器</span></div>
+        <div class="card-desc">浏览器自动化和网页交互</div>
+        <div class="card-click-hint">点击查看详情 →</div>
+      </div>
+      <div class="card" data-key="obsidian2">
+        <div class="card-top"><span class="card-name">obsidian</span><span class="card-badge">笔记</span></div>
+        <div class="card-desc">Obsidian知识库管理</div>
+        <div class="card-click-hint">点击查看详情 →</div>
+      </div>
+      <div class="card" data-key="humanize2">
+        <div class="card-top"><span class="card-name">humanize-chinese</span><span class="card-badge">写作</span></div>
+        <div class="card-desc">中文内容人格化处理</div>
+        <div class="card-click-hint">点击查看详情 →</div>
+      </div>
+      <div class="card" data-key="summarize2">
+        <div class="card-top"><span class="card-name">summarize</span><span class="card-badge">内容</span></div>
+        <div class="card-desc">内容智能摘要</div>
+        <div class="card-click-hint">点击查看详情 →</div>
+      </div>
+      <div class="card" data-key="tavily2">
+        <div class="card-top"><span class="card-name">tavily-search</span><span class="card-badge">搜索</span></div>
+        <div class="card-desc">深度网络搜索</div>
+        <div class="card-click-hint">点击查看详情 →</div>
+      </div>
+      <div class="card" data-key="pdf2">
+        <div class="card-top"><span class="card-name">pdf</span><span class="card-badge">文档</span></div>
+        <div class="card-desc">PDF文档解析</div>
+        <div class="card-click-hint">点击查看详情 →</div>
+      </div>
+      <div class="card" data-key="github2">
+        <div class="card-top"><span class="card-name">github</span><span class="card-badge">开发</span></div>
+        <div class="card-desc">GitHub操作集成</div>
+        <div class="card-click-hint">点击查看详情 →</div>
+      </div>
+      <div class="card" data-key="getnote">
+        <div class="card-top"><span class="card-name">getnote</span><span class="card-badge">笔记</span></div>
+        <div class="card-desc">跨平台笔记获取</div>
+        <div class="card-click-hint">点击查看详情 →</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- 虎虾 -->
+<section class="section red-theme" id="huxia">
+  <div class="section-header">
+    <div class="section-dot" style="background:var(--red)"></div>
+    <div class="section-title">🐯 虎虾包 · HuXia</div>
+  </div>
+  <div class="section-role">国内市场研究员 — Kimi Web平台 · 按需调用 · 深度调研专家</div>
+  <div class="cards">
+    <div class="card" data-key="compe-research">
+      <div class="card-top"><span class="card-name">竞品深度调研</span><span class="card-badge">情报</span></div>
+      <div class="card-desc">对指定公司/产品进行深度市场调研</div>
+      <div class="card-highlight">多维度：产品/营收/用户/竞争格局</div>
+      <div class="card-click-hint">点击查看详情 →</div>
+    </div>
+    <div class="card" data-key="blue-ocean">
+      <div class="card-top"><span class="card-name">蓝海市场分析</span><span class="card-badge">战略</span></div>
+      <div class="card-desc">发现高收入低AI渗透率的市场机会</div>
+      <div class="card-highlight">已产出多个市场深度调研报告</div>
+      <div class="card-click-hint">点击查看详情 →</div>
+    </div>
+    <div class="card" data-key="side-income">
+      <div class="card-top"><span class="card-name">副业变现指南</span><span class="card-badge">内容</span></div>
+      <div class="card-desc">分析AI工具变现路径和实操方法</div>
+      <div class="card-highlight">结合中国市场实际情况</div>
+      <div class="card-click-hint">点击查看详情 →</div>
+    </div>
+    <div class="card" data-key="digital-human">
+      <div class="card-top"><span class="card-name">数字人调研</span><span class="card-badge">技术</span></div>
+      <div class="card-desc">追踪数字人/AI虚拟形象最新技术方案</div>
+      <div class="card-highlight">覆盖HeyGen/EchoMimicV2等主流方案</div>
+      <div class="card-click-hint">点击查看详情 →</div>
+    </div>
+    <div class="card" data-key="skill-recommend">
+      <div class="card-top"><span class="card-name">Skill 推荐</span><span class="card-badge">工具</span></div>
+      <div class="card-desc">从ClawHub发现适合团队的新技能</div>
+      <div class="card-highlight">按场景推荐，附安装指南</div>
+      <div class="card-click-hint">点击查看详情 →</div>
+    </div>
+    <div class="card" data-key="openclaw-analysis">
+      <div class="card-top"><span class="card-name">OpenClaw 系统解析</span><span class="card-badge">知识</span></div>
+      <div class="card-desc">深度解读OpenClaw新功能和最佳实践</div>
+      <div class="card-highlight">新版本/技能包/生态追踪</div>
+      <div class="card-click-hint">点击查看详情 →</div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<section class="tag-section">
+  <h2>🏷 领域标签索引</h2>
+  <div class="tag-grid">
+    <div class="tag-item"><div class="tag-dot" style="background:#ef4444"></div><span class="tag-label">投资分析</span><span class="tag-skills">A股 · 港股 · 美股 · 持仓档案 · 投资周报</span></div>
+    <div class="tag-item"><div class="tag-dot" style="background:#f97316"></div><span class="tag-label">情报抓取</span><span class="tag-skills">Gartner · 竞情 · 全球新闻 · FMCG · AI新闻</span></div>
+    <div class="tag-item"><div class="tag-dot" style="background:#eab308"></div><span class="tag-label">内容创作</span><span class="tag-skills">humanize-chinese · pptx · summary-report · Gamma Deck</span></div>
+    <div class="tag-item"><div class="tag-dot" style="background:#22c55e"></div><span class="tag-label">知识管理</span><span class="tag-skills">知识卡片×4 · obsidian · summarize · getnote</span></div>
+    <div class="tag-item"><div class="tag-dot" style="background:#3b82f6"></div><span class="tag-label">AI 研究</span><span class="tag-skills">AI论文 · AI意见领袖 · AI巨头访谈 · GitHub趋势</span></div>
+    <div class="tag-item"><div class="tag-dot" style="background:#8b5cf6"></div><span class="tag-label">系统运维</span><span class="tag-skills">巡检 · 备份 · Hooks调度 · AgentFeedback</span></div>
+    <div class="tag-item"><div class="tag-dot" style="background:#6b7280"></div><span class="tag-label">自我进化</span><span class="tag-skills">self-improving-agent · skill-vetter · find-skills</span></div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- TIPS -->
+<section class="tips-section" id="tips">
+  <h2>💡 多Agent管理经验</h2>
+  <p class="sub">踩了很多坑之后沉淀下来的第一性原理 — 适合任何想搭建多Agent协作系统的人。</p>
+  <div class="tips-grid">
+
+    <div class="tip-card">
+      <div class="tip-top">
+        <div class="tip-icon">🎯</div>
+        <div>
+          <div class="tip-num">原则 01</div>
+          <div class="tip-title">一虾一专 · 不要全能单兵</div>
+        </div>
+      </div>
+      <div class="tip-desc">每个 Agent 只做一类事，system prompt 越短越专，输出质量越稳定。让同一个 Agent 又写报告又抓数据又管文件，它会在多个角色间漂移，失去"个性"。</div>
+      <div class="tip-quote">宁可多开一只虾，不要让一只虾什么都干。</div>
+    </div>
+
+    <div class="tip-card">
+      <div class="tip-top">
+        <div class="tip-icon">📣</div>
+        <div>
+          <div class="tip-num">原则 02</div>
+          <div class="tip-title">事事有回音 · 不要 fire-and-forget</div>
+        </div>
+      </div>
+      <div class="tip-desc">发出去的任务，不代表执行了。网关重启、API 超时、模型降级……任何环节都可能静默失败。每个任务必须有明确的完成信号，否则你只是在自我安慰。</div>
+      <div class="tip-quote">没有回音的任务，等于没有执行的任务。</div>
+    </div>
+
+    <div class="tip-card">
+      <div class="tip-top">
+        <div class="tip-icon">🔗</div>
+        <div>
+          <div class="tip-num">原则 03</div>
+          <div class="tip-title">回音总线不依赖 IM 平台</div>
+        </div>
+      </div>
+      <div class="tip-desc">飞书/Slack/微信 的 bot 无法互相发消息。用共享文件目录（坚果云/S3/NFS）作为 Agent 间的消息总线，写文件比调 API 更可靠，还天然留下日志。</div>
+      <div class="tip-quote">最稳的通信方式，往往是最朴素的那个。</div>
+    </div>
+
+    <div class="tip-card">
+      <div class="tip-top">
+        <div class="tip-icon">🔑</div>
+        <div>
+          <div class="tip-num">原则 04</div>
+          <div class="tip-title">API Key 集中管理 · 定期同步</div>
+        </div>
+      </div>
+      <div class="tip-desc">Key 分散在各 Agent 的配置文件里，一旦过期就是一场考古。用统一的 master key 文件，任何 Key 更新只需改一处，再同步到所有 Agent。同时设置 Key 过期告警。</div>
+      <div class="tip-quote">Key 过期比 Bug 更危险，因为它不报错，只是悄悄变差。</div>
+    </div>
+
+    <div class="tip-card">
+      <div class="tip-top">
+        <div class="tip-icon">🔍</div>
+        <div>
+          <div class="tip-num">原则 05</div>
+          <div class="tip-title">每日巡检是质量护城河</div>
+        </div>
+      </div>
+      <div class="tip-desc">多个 Agent 并行运行，靠人工检查不现实。自动巡检脚本每日凌晨检查所有产出的文件大小、生成时间和内容完整性，异常立刻告警。这是发现问题的第一道防线。</div>
+      <div class="tip-quote">没有监控的自动化，是定时炸弹。</div>
+    </div>
+
+    <div class="tip-card">
+      <div class="tip-top">
+        <div class="tip-icon">🌱</div>
+        <div>
+          <div class="tip-num">原则 06</div>
+          <div class="tip-title">从一只虾开始 · 逐步演进</div>
+        </div>
+      </div>
+      <div class="tip-desc">不要一上来就设计五虾协作的完美架构。先让一只虾把一件事做好，跑稳之后再拆分、再扩展。过早的复杂性是最大的敌人，Agent 系统的债务比代码债务更难还。</div>
+      <div class="tip-quote">先做好一件事，再做好第二件事。</div>
+    </div>
+
+    <div class="tip-card">
+      <div class="tip-top">
+        <div class="tip-icon">🧠</div>
+        <div>
+          <div class="tip-num">原则 07</div>
+          <div class="tip-title">指挥层与执行层分离</div>
+        </div>
+      </div>
+      <div class="tip-desc">需要一只专门负责调度、巡检和对外沟通的"指挥虾"，它不做具体任务，只负责派发、跟踪和汇报。执行层的虾不需要知道全局，只需要把自己的任务做好并回音。</div>
+      <div class="tip-quote">指挥官不冲锋，执行者不分心。</div>
+    </div>
+
+    <div class="tip-card">
+      <div class="tip-top">
+        <div class="tip-icon">💾</div>
+        <div>
+          <div class="tip-num">原则 08</div>
+          <div class="tip-title">记忆管理决定 Agent 上限</div>
+        </div>
+      </div>
+      <div class="tip-desc">每只 Agent 的 MEMORY.md 是它的"长期记忆"，要精心维护：只写对未来有用的规则和经验，定期清理过时内容。好的 MEMORY 让 Agent 越用越聪明，坏的 MEMORY 让它越来越混乱。</div>
+      <div class="tip-quote">MEMORY.md 是 Agent 的灵魂文件，写什么就变什么。</div>
+    </div>
+
+    <div class="tip-card">
+      <div class="tip-top">
+        <div class="tip-icon">⚡</div>
+        <div>
+          <div class="tip-num">原则 09</div>
+          <div class="tip-title">成本控制：任务分级 · 模型分级</div>
+        </div>
+      </div>
+      <div class="tip-desc">不是所有任务都需要最强模型。日常数据拉取和格式转换用轻量模型，深度分析和创作才用旗舰模型。按任务复杂度匹配模型，在不降低质量的前提下把成本打到最低。</div>
+      <div class="tip-quote">用对模型比用贵模型更重要。</div>
+    </div>
+
+  </div>
+</section>
+
+<footer>
+  <p>飞虾队 Flying Shrimp Squad · 实战多Agent协作系统</p>
+  <p style="margin-top:.4rem">基于 <strong>OpenClaw</strong> 构建 · 持续迭代中 · 共 <strong>74</strong> 个技能/任务节点</p>
+</footer>
+
+<script>
+// ── Skill detail data ─────────────────────────────────────────────────────
+const SKILLS = {
+  'feishu-bridge': { name:'飞书桥接', badge:'通信', desc:'通过飞书Bot接收用户消息，转发给Claude Agent处理，支持图文/语音/文件多种消息类型。每个Agent独立Bot隔离，互不干扰，实现自然语言任务下发。', detail:'• 飞书开放平台 Webhook 接入\n• 支持消息类型：文字/图片/语音/文件/@ 提及\n• 多Bot独立部署，Agent间通信互不干扰\n• 基于 launchd 常驻守护进程', copy:'# 飞书桥接 — 核心通信层\n# 需要：飞书开放平台 App ID + App Secret\n# 文档参见飞书开放平台 Webhook 接入指南', type:'custom' },
+  'daily-inspect': { name:'每日巡检', badge:'监控', desc:'每日凌晨01:00自动检查全队所有Agent的产出质量，包括文件大小、内容完整性、生成时间等维度，异常情况实时飞书告警。', detail:'• 检查维度：文件存在性 / 大小≥1KB / 生成时间窗口\n• 每个任务独立评分，汇总健康度报告\n• 异常自动触发飞书通知\n• 每周任务设宽松时间窗口（±6h）', copy:'# 每日巡检 Cron 配置\n# cron: 0 1 * * *\n# 检查路径：~/Nutstore Files/FS_KM/00_Agent_Sandbox/\n# 告警阈值：文件 < 1024 bytes 标记失败', type:'custom' },
+  'backup-check': { name:'备份检查', badge:'运维', desc:'每日04:00验证各Agent备份任务执行状态，三天轮换保留策略，确保数据安全。备份失败自动催促Agent重新执行。', detail:'• 检查各Agent workspace备份完整性\n• 三天轮换：backup_0 / backup_1 / backup_2\n• 备份失败自动触发Hooks重新执行\n• 报告落云端共享目录', copy:'# 备份检查 Cron\n# cron: 0 4 * * *\n# 备份策略：3天轮换，保留最近3份\n# 命名格式：backup_YYYYMMDD_N.tar.gz', type:'custom' },
+  'hooks-dispatch': { name:'Hooks 调度', badge:'协调', desc:'通过HTTP POST向各Agent的OpenClaw网关下发任务指令，支持fire-and-forget模式，配合AgentFeedback回音总线实现双保险确认。', detail:'• HTTP POST 到 Agent 本地网关端口\n• Payload：{ "prompt": "...", "runId": "uuid" }\n• 支持延迟发送和重试逻辑\n• runId 用于追踪对应回音文件', copy:'curl -X POST http://<agent-host>:<port>/hooks \\\n  -H "Content-Type: application/json" \\\n  -d \'{"prompt":"执行任务X","runId":"abc123"}\'', type:'custom' },
+  'agent-feedback': { name:'AgentFeedback 回音总线', badge:'协调', desc:'利用云端共享目录（坚果云/Nutstore）作为Agent间消息总线，各Agent完成任务后写入回音文件，指挥Agent统一监控。解决了IM bot-to-bot无法通信的根本问题。', detail:'• 路径：FS_KM/00_Agent_Sandbox/Inbox/AgentFeedback/\n• 文件命名：YYYYMMDD_AgentName_TaskName.md\n• 内容：任务描述 / 结果 / 发现问题 / 完成时间\n• 海外Agent通过 rclone 上传', copy:'# 回音文件写入规范\n# 路径：Inbox/AgentFeedback/YYYYMMDD_AgentName_Task.md\n\n## 任务\n[任务描述]\n\n## 结果\n状态：完成/失败\n\n## 问题\n[发现的问题]\n\n## 时间\n[完成时间]', type:'custom' },
+  'gamma-deck': { name:'Gamma Deck 生成', badge:'内容', desc:'调用Gamma API将Markdown内容自动生成演示文稿，并导出pptx文件保存到云端。支持主题定制，一键生成专业级幻灯片。', detail:'• 输入：Markdown 大纲\n• 调用 Gamma Create API 生成 deck\n• 自动下载 pptx 到指定目录\n• 支持暗色/亮色主题切换', copy:'# Gamma Deck 生成流程\n# 1. 准备 Markdown 大纲\n# 2. POST https://api.gamma.app/v1/generate\n# 3. 轮询状态直到完成\n# 4. GET 导出 pptx 链接下载\n# 需要：GAMMA_API_KEY', type:'custom' },
+  'squad-daily': { name:'飞虾队日报', badge:'报告', desc:'每日凌晨01:00（巡检完成后）自动生成全队日报，汇总各Agent当日任务执行情况、质量评分和异常记录，落云端归档。', detail:'• 巡检完成后自动触发\n• 内容：全Agent任务清单 + 完成状态 + 质量评分\n• 格式：Markdown，落 FS_KM/日报目录\n• 异常任务重点标注', copy:'# 飞虾队日报 — 自动生成\n# 触发：每日巡检完成后\n# 输出路径：FS_KM/日报/YYYYMMDD_飞虾队日报.md', type:'custom' },
+
+  'a-share': { name:'A股收盘分析', badge:'投资', desc:'每个A股交易日15:30后自动运行，拉取当日行情数据，生成包含市场综述、行业轮动、持仓盈亏的完整分析报告。', detail:'• 数据源：Tushare Pro API\n• 包含：指数表现 / 涨跌家数 / 行业板块 / 个股持仓\n• 格式：结构化Markdown，含表格\n• 自动识别交易日，节假日跳过', copy:'# A股收盘分析 — Cron 配置\n# cron: 30 15 * * 1-5\n# 注意：需判断当日是否为交易日\n# 数据源：tushare.pro（需Token）', type:'custom' },
+  'hk-share': { name:'港股收盘分析', badge:'投资', desc:'港股交易日（周一至周五）收盘后自动生成港股市场总结，含恒指/国企指数表现及持仓分析。', detail:'• 数据源：Yahoo Finance / AASTOCKS\n• 包含：恒指/国企指数 / 成交额 / 持仓标的表现\n• 自动识别港股交易日历\n• 格式同A股报告风格一致', copy:'# 港股收盘分析 — Cron 配置\n# cron: 0 17 * * 1-5\n# 港股收盘16:00，延后1小时确保数据就绪', type:'custom' },
+  'us-share': { name:'美股雷达', badge:'投资', desc:'每个美股交易日收盘后（北京时间次日凌晨）自动生成美股雷达报告，含VIX恐慌指数、市场情绪和持仓分析。', detail:'• 数据源：Yahoo Finance API\n• 包含：三大指数 / VIX / 板块热力图 / 持仓表现\n• 宏观环境分析（美联储/利率/美元指数）\n• 按交易日历判断是否运行', copy:'# 美股雷达 — Cron 配置\n# cron: 0 6 * * 2-6\n# 美股收盘约北京时间次日5:00（夏令时4:00）', type:'custom' },
+  'invest-weekly': { name:'投资周报', badge:'投资', desc:'每周五收盘后生成跨市场投资组合周度综合分析，包含A股/港股/美股三市联动分析、持仓变化和下周展望。', detail:'• 周度视角的宏观+持仓综合报告\n• 三市联动分析（相关性 / 风险集中度）\n• 持仓本周变化 + 盈亏归因\n• 下周市场风险提示', copy:'# 投资周报 — Cron 配置\n# cron: 0 18 * * 5\n# 每周五美股开盘前生成，覆盖全周行情', type:'custom' },
+  'portfolio': { name:'持仓档案管理', badge:'投资', desc:'维护结构化的持仓档案文件，记录每只标的的成本价、账户归属、定投计划和操作历史，作为各分析脚本的数据源。', detail:'• 格式：YAML/Markdown 混合结构\n• 字段：股票代码 / 名称 / 账户 / 成本价 / 持仓量\n• 支持定投计划记录\n• 被A股/港股/美股脚本自动读取', copy:'# 持仓档案格式示例\n# positions:\n#   - code: "600519"\n#     name: "贵州茅台"\n#     account: "Account_A"\n#     cost: 1800.00\n#     shares: 10', type:'custom' },
+  'gartner': { name:'Gartner 抓取 v6', badge:'情报', desc:'自动抓取Gartner研究报告全文，内置多层反封号策略，模拟真实用户阅读行为，稳定获取行业分析内容。', detail:'• 技术栈：Playwright + CDP协议动态连接\n• 反封号：随机延时 / 滚动模拟 / 鼠标轨迹\n• 支持批量报告下载\n• 输出：Markdown全文 + 元数据', copy:'# Gartner 抓取 — 核心策略\n# 1. CDP 连接已登录的 Chrome 实例\n# 2. 随机 2-8 秒页面停留\n# 3. 模拟阅读滚动（非匀速）\n# 4. 提取正文 → 转 Markdown', type:'custom' },
+  'comint': { name:'竞情分析', badge:'情报', desc:'针对指定公司或产品，自动抓取多渠道竞品情报并生成结构化分析报告，支持中英文双语信息源。', detail:'• 搜索引擎：Metaso（元搜索）+ Brave Search\n• 信息源：官网 / 新闻 / 分析师报告 / 社交媒体\n• 输出：SWOT结构化报告\n• 支持定期跟踪模式', copy:'# 竞情分析 — 使用方式\n# 触发：鳌虾 Hooks 下发目标公司名\n# 输出：Markdown 竞情报告\n# 格式：概况 / 产品 / 市场 / 动态 / 威胁', type:'custom' },
+
+  'humanize': { name:'humanize-chinese', badge:'写作', desc:'将AI生成的中文内容进行人格化处理，去除生硬的AI腔，让文字更自然、有温度，符合中文表达习惯。', detail:'• 处理：去除过度结构化 / 官腔 / 重复强调\n• 注入：口语化表达 / 情感词汇 / 自然过渡\n• 支持公众号/朋友圈/报告等不同文体\n• 可配置语气风格', copy:'# 安装\n/skill install humanize-chinese\n\n# 使用\n/humanize-chinese [你的文本]', type:'skill' },
+  'pptx': { name:'pptx', badge:'演示', desc:'通过python-pptx库生成本地PPT文件，支持自定义主题、布局和内容填充，适合快速搭建演示文稿骨架。', detail:'• 底层：python-pptx 库\n• 支持：标题页 / 内容页 / 图表占位符\n• 输出：.pptx 文件\n• 可配合 Gamma Deck 使用（骨架→美化）', copy:'/skill install pptx\n\n# 使用示例\n/pptx "主题:AI转型" "章节:背景,现状,方案,路线图"', type:'skill' },
+  'summary-report': { name:'summary-report', badge:'报告', desc:'将一篇或多篇长文档智能摘要成结构化报告，支持多文件合并分析，输出条理清晰的Markdown报告。', detail:'• 支持输入：URL / 本地文件 / 粘贴文本\n• 多文件模式：自动识别主题合并\n• 输出结构：摘要 / 要点 / 关键数据 / 结论\n• 支持中英文', copy:'/skill install summary-report\n\n# 使用示例\n/summary-report https://example.com/report.pdf', type:'skill' },
+  'pdf': { name:'pdf', badge:'文档', desc:'读取和分析PDF文件内容，支持多页、表格提取和扫描件OCR，将PDF内容转为可处理的文本格式。', detail:'• 支持：文字PDF / 扫描件（OCR）/ 表格提取\n• 多页批量处理\n• 输出：结构化文本 + 表格Markdown\n• 可与 summary-report 联动', copy:'/skill install pdf\n\n# 使用示例\n/pdf ~/Downloads/report.pdf', type:'skill' },
+  'xlsx': { name:'xlsx', badge:'数据', desc:'读写Excel文件，支持数据分析、公式计算和图表生成，适合处理财务报表、数据统计等场景。', detail:'• 底层：openpyxl / pandas\n• 读：解析多Sheet，含公式值\n• 写：生成格式化Excel含图表\n• 适合：财务数据 / 投资记录 / 统计汇总', copy:'/skill install xlsx\n\n# 使用示例\n/xlsx read ~/data.xlsx --sheet "Sheet1"\n/xlsx write ~/output.xlsx --data [...]', type:'skill' },
+  'self-improve': { name:'self-improving-agent', badge:'进化', desc:'让Agent在每次任务完成后自动分析执行质量，识别可改进点，并优化自身的system prompt，实现持续进化。', detail:'• 触发：每次任务完成后自动运行\n• 分析维度：输出质量 / 执行效率 / 错误模式\n• 优化对象：system prompt / 工具使用策略\n• 保留优化历史，支持回滚', copy:'/skill install self-improving-agent', type:'skill' },
+  'skill-vetter': { name:'skill-vetter', badge:'管理', desc:'在安装新Skill之前自动审查其代码质量、安全性和合规性，防止安装劣质或恶意Skill，保护Agent系统安全。', detail:'• 检查项：代码安全 / 权限申请 / 数据传输\n• 质量评分：功能完整性 / 文档质量\n• 输出：安装建议 + 风险提示\n• 支持 ClawHub 官方Skill白名单', copy:'/skill install skill-vetter', type:'skill' },
+
+  'fmcg-daily': { name:'FMCG 简报 L01', badge:'每日', desc:'每日早间自动抓取全球FMCG行业最新动态，覆盖宝洁、联合利华、雀巢等跨国企业的战略、产品、渠道最新资讯。', detail:'• 信息源：路透社 / 彭博 / 公司官网 / 行业媒体\n• 覆盖：战略调整 / 产品发布 / 财报数据 / 并购\n• 格式：每则100字摘要 + 原文链接\n• 每日08:00前完成', copy:'# L01 FMCG简报 — Cron\n# cron: 0 6 * * 1-5\n# 数据源：Tavily Search + 行业RSS订阅', type:'custom' },
+  'world-news': { name:'全球新闻 L02', badge:'每日', desc:'每日搜索全球重要新闻事件，从AI决策者视角筛选对商业、科技、地缘政治有重大影响的信息，中英文双语摘要。', detail:'• 搜索引擎：Tavily Search（支持全球）\n• 筛选维度：商业影响力 / 科技关联度 / 时效性\n• 输出：Top 10新闻 + AI视角点评\n• 格式：中文摘要 + 英文原文标题', copy:'# L02 全球新闻 — Cron\n# cron: 0 7 * * *\n# 搜索关键词：business technology AI geopolitics', type:'custom' },
+  'ai-news': { name:'AI 新闻 L03', badge:'每日', desc:'每日聚合AI行业最新动态，重点关注大模型发布、Agent技术进展、AI产品和融资事件，提炼关键信号。', detail:'• 信息源：Hacker News / X / AI官方博客\n• 重点：模型发布 / 技术突破 / 产品发布 / 融资并购\n• 输出：重要程度排序 + 影响分析\n• 每日10条以内，精选不冗余', copy:'# L03 AI新闻 — Cron\n# cron: 30 7 * * *\n# 监控源：openai.com/blog, anthropic.com/news, deepmind.com', type:'custom' },
+  'palantir': { name:'Palantir 本体情报 L05', badge:'周二', desc:'每周二深度分析Palantir Technologies的Ontology（本体论）战略进展，追踪AIP、Foundry、Gotham产品线最新动态和客户案例。', detail:'• 重点：Ontology数据建模方法论\n• 覆盖：AIP平台 / 政府客户 / 商业扩张\n• 信息源：财报 / 官网 / 技术博客 / 客户案例\n• 输出：战略分析 + 技术拆解', copy:'# L05 Palantir情报 — Cron\n# cron: 0 8 * * 2\n# 输出：FS_KM/龙虾情报/Palantir/YYYYMMDD.md', type:'custom' },
+  'ai-fmcg': { name:'AI+FMCG 分析 L06', badge:'周日', desc:'每周日分析AI技术在FMCG行业的最新落地案例，覆盖供应链优化、消费者洞察、精准营销、产品研发等场景。', detail:'• 案例来源：麦肯锡 / 德勤 / 公司公告 / 行业媒体\n• 分析维度：技术方案 / 投资规模 / 落地效果\n• 输出：5-8个案例深度拆解\n• 与FMCG简报形成周维度补充', copy:'# L06 AI+FMCG — Cron\n# cron: 0 9 * * 0\n# 输出：FS_KM/龙虾情报/AI_FMCG/YYYYMMDD.md', type:'custom' },
+  'ai-paper': { name:'AI 论文分析 L07', badge:'周三', desc:'每周三抓取并分析最新AI学术论文，重点追踪arXiv上的前沿研究，提炼对实际应用有影响的技术突破。', detail:'• 来源：arXiv cs.AI / cs.LG / cs.CL 分类\n• 筛选：引用数 / 机构权重 / 实用性\n• 输出：5篇精选论文 + 100字摘要 + 应用影响\n• 附作者/机构/发布日期', copy:'# L07 AI论文 — Cron\n# cron: 0 10 * * 3\n# 数据源：arXiv API + Semantic Scholar', type:'custom' },
+  'ai-interview': { name:'AI 巨头访谈 L08', badge:'周六', desc:'每周六整理AI行业领袖的播客、访谈、演讲核心观点，涵盖Sam Altman、Yann LeCun、Demis Hassabis等人的最新论述。', detail:'• 来源：Lex Fridman / 20VC / TED / 公司博客\n• 人物：OpenAI / Anthropic / DeepMind / Meta AI\n• 输出：核心观点摘录 + 鳌虾解读\n• 附原始链接和时间戳', copy:'# L08 AI访谈 — Cron\n# cron: 0 9 * * 6\n# 监控：YouTube播客 + X长推文 + 公司博客', type:'custom' },
+  'github-trend': { name:'GitHub 趋势 L09', badge:'周四', desc:'每周四抓取GitHub Trending榜单，重点追踪AI/ML/Agent相关开源项目，分析社区热度和技术方向。', detail:'• 数据源：GitHub Trending API\n• 筛选：AI/ML/Agent/LLM 标签\n• 分析：Star增速 / 项目价值 / 应用场景\n• 输出：Top 10项目 + 快速使用说明', copy:'# L09 GitHub趋势 — Cron\n# cron: 0 11 * * 4\n# API：api.github.com/search/repositories', type:'custom' },
+  'ai-kol': { name:'AI 意见领袖 L10', badge:'周五', desc:'每周五整理海外AI KOL的最新观点和预测，覆盖Twitter/X、LinkedIn等平台，捕捉行业前沿思维。', detail:'• 平台：Twitter/X / LinkedIn / Substack\n• 跟踪人物：50+ AI研究员/创业者/投资人\n• 输出：热议话题 + 代表性观点 + 争议点\n• 含鳌虾对不同观点的综合判断', copy:'# L10 AI KOL — Cron\n# cron: 0 12 * * 5\n# 数据源：Twitter API v2 / Tavily搜索', type:'custom' },
+
+  'agent-browser': { name:'agent-browser', badge:'浏览器', desc:'基于Playwright的浏览器自动化技能，让Agent能够控制真实浏览器执行复杂的网页交互，如点击、填表、截图、数据抓取。', detail:'• 底层：Playwright Chromium\n• 支持：点击 / 输入 / 截图 / 等待 / 滚动\n• 支持Cookie/Session持久化\n• 反检测：随机UA + 鼠标轨迹模拟', copy:'/skill install agent-browser', type:'skill' },
+  'feishu-im': { name:'feishu-im', badge:'通信', desc:'飞书消息发送技能，让Agent能够主动向飞书用户或群组发送消息、图片和文件，实现任务完成通知。', detail:'• 支持：文字 / 富文本 / 图片 / 文件\n• 目标：用户 / 群组 / 机器人\n• 需要：飞书 App ID + App Secret + 接收方 OpenID\n• 支持 @指定成员', copy:'/skill install feishu-im', type:'skill' },
+  'tavily': { name:'tavily-search', badge:'搜索', desc:'接入Tavily搜索API，提供深度网络搜索能力，支持指定域名、时间范围和内容类型过滤，返回带摘要的搜索结果。', detail:'• API：api.tavily.com\n• 支持：全网搜索 / 指定域名 / 时间过滤\n• 结果包含：标题 / URL / 摘要 / 评分\n• 支持深度搜索模式（更准确，消耗更多配额）', copy:'/skill install tavily-search\n\n# 需要：TAVILY_API_KEY', type:'skill' },
+  'wechat-extractor': { name:'wechat-article-extractor', badge:'内容', desc:'提取微信公众号文章的完整内容，包括正文、图片说明和作者信息，转换为干净的Markdown格式。', detail:'• 输入：公众号文章链接\n• 输出：Markdown全文 + 元数据\n• 处理：去广告 / 去导流 / 图片保留链接\n• 支持批量提取', copy:'/skill install wechat-article-extractor', type:'skill' },
+  'summarize': { name:'summarize', badge:'内容', desc:'智能摘要技能，支持输入URL、本地文件或纯文本，生成结构化摘要，适合快速消化长内容。', detail:'• 输入：URL / PDF / 文本 / YouTube链接（含字幕）\n• 输出：3段式摘要（背景/核心/结论）\n• 支持自定义摘要长度\n• 可指定摘要语言', copy:'/skill install summarize\n\n# 使用\n/summarize https://example.com/long-article', type:'skill' },
+  'github-skill': { name:'github', badge:'开发', desc:'GitHub操作技能，让Agent能够读写GitHub仓库，包括查看PR/Issue、提交代码、搜索仓库和文件内容。', detail:'• 支持：Repo读写 / PR管理 / Issue操作\n• 代码搜索：全库/指定文件 语义搜索\n• 需要：GitHub Personal Access Token\n• 支持公开仓库和私有仓库', copy:'/skill install github\n\n# 需要：GITHUB_TOKEN', type:'skill' },
+  'obsidian': { name:'obsidian', badge:'笔记', desc:'Obsidian知识库管理技能，让Agent能够读写本地Obsidian Vault，包括创建笔记、搜索内容和维护双链关系。', detail:'• 支持：创建/更新/搜索/删除笔记\n• 双链：自动维护 [[Wiki链接]]\n• 支持 YAML frontmatter 元数据\n• 需要：Obsidian Vault 本地路径', copy:'/skill install obsidian\n\n# 配置：OBSIDIAN_VAULT_PATH=/path/to/vault', type:'skill' },
+  'find-skills': { name:'find-skills', badge:'管理', desc:'从ClawHub技能市场搜索和安装新技能，支持关键词搜索、分类浏览和一键安装，帮助Agent扩展能力。', detail:'• 搜索 ClawHub 官方技能库\n• 支持：关键词 / 分类 / 评分筛选\n• 安装前自动运行 skill-vetter 审查\n• 显示技能详情、评分和安装量', copy:'/skill install find-skills\n\n# 使用\n/find-skills "搜索关键词"', type:'skill' },
+
+  'linux-card': { name:'Linux 知识卡', badge:'每日', desc:'每日生成一张Linux运维知识点精华卡片，从入门到高级系统化覆盖，帮助用户构建扎实的Linux技能体系。', detail:'• 主题池：文件系统 / 进程管理 / 网络 / Shell / 安全\n• 格式：概念 + 命令示例 + 实战场景\n• 难度：循序渐进，初中高级均衡\n• 每日08:00生成', copy:'# Linux知识卡 — 卡片格式\n## 今日主题：[主题]\n**核心概念：**\n[解释]\n\n**常用命令：**\n```bash\n[命令示例]\n```\n\n**实战场景：**\n[使用场景]', type:'custom' },
+  'psych-card': { name:'心理学知识卡', badge:'每日', desc:'每日生成一张心理学知识卡片，涵盖认知偏差、行为心理、社会心理等领域，结合日常生活和决策场景。', detail:'• 主题池：认知偏差 / 行为经济学 / 社会心理 / 动机理论\n• 格式：概念定义 + 真实案例 + 应用启示\n• 聚焦实用性，非学术堆砌\n• 每日09:00生成', copy:'# 心理学知识卡 — 卡片格式\n## 今日概念：[概念名]\n**定义：**[简明定义]\n\n**案例：**[生活/商业案例]\n\n**启示：**[如何应用]', type:'custom' },
+  'security-card': { name:'信息安全知识卡', badge:'每日', desc:'每日生成一张信息安全知识卡片，覆盖网络安全、社会工程学、密码学、渗透测试等主题，兼顾防御和进攻视角。', detail:'• 主题池：钓鱼攻击 / SQL注入 / XSS / 密码学 / 零信任\n• 格式：攻击原理 + 防御方案 + 检测方法\n• 难度循序渐进，含实战工具介绍\n• 每日10:00生成', copy:'# 信息安全知识卡 — 卡片格式\n## 今日主题：[主题]\n**攻击原理：**[说明]\n\n**防御方案：**[具体措施]\n\n**检测工具：**[工具名称]', type:'custom' },
+  'phil-card': { name:'哲学知识卡', badge:'每日', desc:'每日生成一张哲学思想精华卡片，从古希腊到现代哲学，结合当代问题（AI伦理/决策/存在）给出启发。', detail:'• 主题池：柏拉图/亚里士多德/康德/尼采/维特根斯坦\n• 现代主题：AI伦理 / 实用主义 / 存在主义\n• 格式：哲学家 + 核心思想 + 当代联系\n• 每日11:00生成', copy:'# 哲学知识卡 — 卡片格式\n## 今日哲学家/概念：[名称]\n**核心思想：**[简明解释]\n\n**代表作/名言：**[引用]\n\n**当代联系：**[与今日问题的关联]', type:'custom' },
+
+  'manus-task': { name:'manus-task', badge:'自动化', desc:'连接Manus AI平台的任务发布和结果下载管道，让Agent能够将复杂任务委托给Manus执行并自动取回结果。', detail:'• 支持：任务发布 / 状态轮询 / 结果下载\n• 适合：需要浏览器操作的复杂研究任务\n• 结果自动保存到本地指定路径\n• 支持任务优先级设置', copy:'/skill install manus-task\n\n# 需要：MANUS_API_KEY 或 Cookie', type:'skill' },
+  'agent-browser2': { name:'agent-browser', badge:'浏览器', desc:'基于Playwright的浏览器自动化技能，麦虾用于知识卡片素材抓取和内容收集。', detail:'• 同龙虾的 agent-browser\n• 麦虾场景：知识素材抓取 / 维基百科 / 学术网站\n• 支持中文网站（百度/知乎/豆瓣）', copy:'/skill install agent-browser', type:'skill' },
+  'obsidian2': { name:'obsidian', badge:'笔记', desc:'Obsidian知识库管理，麦虾用于将生成的知识卡片自动归档到Obsidian知识库，维护知识体系。', detail:'• 麦虾场景：知识卡片自动归档\n• 按主题分类：Linux/心理学/安全/哲学\n• 自动添加日期标签和双链\n• 支持全文搜索', copy:'/skill install obsidian', type:'skill' },
+  'humanize2': { name:'humanize-chinese', badge:'写作', desc:'麦虾用于对知识卡片内容进行人格化润色，使输出的知识卡片更加生动易读，不像机器直接生成。', detail:'• 同甜虾的 humanize-chinese\n• 麦虾场景：知识卡片语言优化\n• 目��：通俗易懂，接地气', copy:'/skill install humanize-chinese', type:'skill' },
+  'summarize2': { name:'summarize', badge:'内容', desc:'麦虾用于将参考资料摘要后作为知识卡片的素材基础，提高知识卡片的内容质量和准确性。', detail:'• 同龙虾的 summarize\n• 麦虾场景：参考资料处理\n• 输出作为知识卡片撰写的素材', copy:'/skill install summarize', type:'skill' },
+  'tavily2': { name:'tavily-search', badge:'搜索', desc:'麦虾用于搜索知识卡片主题相关的最新、权威资料，确保知识内容的准确性和时效性。', detail:'• 同龙虾的 tavily-search\n• 麦虾场景：知识素材检索\n• 搜索目标：百科 / 学术 / 权威资料', copy:'/skill install tavily-search', type:'skill' },
+  'pdf2': { name:'pdf', badge:'文档', desc:'麦虾用于解析PDF格式的教材、报告等参考资料，提取内容用于知识卡片生成。', detail:'• 同甜虾的 pdf\n• 麦虾场景：教材/报告内容提取\n• 支持中文PDF', copy:'/skill install pdf', type:'skill' },
+  'github2': { name:'github', badge:'开发', desc:'麦虾用于搜索GitHub上的优质学习资源和代码示例，充实Linux和信息安全知识卡片的内容。', detail:'• 同龙虾的 github\n• 麦虾场景：代码示例搜索\n• 重点：Linux命令 / 安全工具 awesome列表', copy:'/skill install github', type:'skill' },
+  'getnote': { name:'getnote', badge:'笔记', desc:'跨平台笔记获取技能，让Agent能够从多种笔记平台（印象笔记/有道/Notion等）读取内容，整合知识源。', detail:'• 支持平台：印象笔记 / 有道笔记 / Notion\n• 功能：搜索 / 读取 / 批量导出\n• 适合：整合分散的笔记内容\n• 输出统一为Markdown格式', copy:'/skill install getnote', type:'skill' },
+
+  'compe-research': { name:'竞品深度调研', badge:'情报', desc:'对指定公司或产品进行全方位深度调研，从产品、营收、用户、技术、竞争格局多个维度输出结构化分析报告。', detail:'• 调研维度：产品功能 / 商业模式 / 用户规模\n• 竞争分析：差异化 / 护城河 / 弱点\n• 信息源：官网 / 招股书 / 媒体报道 / 用户评论\n• 输出：10-20页结构化报告', copy:'# 竞品调研 — 触发方式\n# 鳌虾 Hooks 下发：{"target": "公司名", "focus": "重点方向"}\n# 输出：FS_KM/虎虾调研/竞品/YYYYMMDD_公司名.md', type:'custom' },
+  'blue-ocean': { name:'蓝海市场分析', badge:'战略', desc:'系统分析特定行业或地区市场的AI渗透率和机会空白，识别高价值低竞争的蓝海机会，输出可行性评估报告。', detail:'• 分析框架：市场规模 / AI渗透率 / 竞争强度 / 进入壁垒\n• 已研究市场：日本 / 东南亚 / 中东 / 垂直行业\n• 输出：机会地图 + 优先级排序 + 进入建议\n• 数据源：IDC / Gartner / 本地报告', copy:'# 蓝海市场分析 — 触发方式\n# 鳌虾 Hooks 下发：{"market": "日本AI咨询市场"}\n# 输出：FS_KM/虎虾调研/蓝海/YYYYMMDD_市场名.md', type:'custom' },
+  'side-income': { name:'副业变现指南', badge:'内容', desc:'分析AI工具在中国市场的副业变现路径，覆盖知识付费、自动化外包、内容创作、工具开发等模式，提供可执行的操作手册。', detail:'• 覆盖模式：知识付费 / 代做服务 / 工具变现 / 内容矩阵\n• 结合中国平台：淘宝/闲鱼/小红书/视频号\n• 输出：变现路径图 + 启动成本 + 月收入预估\n• 含真实案例参考', copy:'# 副业变现指南 — 触发方式\n# 按需调用，输出到 FS_KM/虎虾调研/变现/', type:'custom' },
+  'digital-human': { name:'数字人调研', badge:'技术', desc:'追踪数字人和AI虚拟形象的最新技术方案，覆盖商业产品和开源方案，评估实用性、成本和效果。', detail:'• 商业方案：HeyGen Avatar IV / D-ID / Synthesia\n• 开源方案：EchoMimicV2 / MuseTalk / SadTalker\n• 评估维度：自然度 / 口型同步 / 成本 / 延迟\n• 含部署难度和使用场景建议', copy:'# 数字人调研 — 输出\n# 最新调研：FS_KM/虎虾调研/数字人/\n# 包含：方案对比表 + 视频效果链接', type:'custom' },
+  'skill-recommend': { name:'Skill 推荐', badge:'工具', desc:'定期从ClawHub技能市场发现适合团队使用场景的新技能，提供评测和安装建议，帮助持续扩展团队能力边界。', detail:'• 搜索维度：使用场景匹配 / 评分 / 活跃维护\n• 输出：推荐报告 + 安装指令 + 使用场景\n• 每月定期执行，也支持按需触发\n• 过滤已安装技能，只推荐新增', copy:'# Skill推荐 — 触发方式\n# 按需：鳌虾 Hooks 发送 {"task":"skill_recommend"}\n# 输出：FS_KM/虎虾调研/Skill推荐/YYYYMMDD.md', type:'custom' },
+  'openclaw-analysis': { name:'OpenClaw 系统解析', badge:'知识', desc:'深度解读OpenClaw平台的新功能、架构设计和最佳实践，帮助团队及时跟进平台能力升级，优化Agent配置。', detail:'• 关注：版本更新 / 新Skill / 架构变化\n• 实测：新功能效果验证\n• 输出：解读报告 + 飞虾队应用建议\n• 信息源：OpenClaw文档/社区/ClawHub', copy:'# OpenClaw系统解析 — 触发方式\n# 新版本发布时由鳌虾触发\n# 输出：FS_KM/虎虾调研/OpenClaw/', type:'custom' },
+};
+
+// ── Aliases for duplicated skill keys ────────────────────────────────────
+['agent-browser2','obsidian2','humanize2','summarize2','tavily2','pdf2','github2'].forEach(k => {
+  const base = k.replace(/\d+$/, '');
+  if (!SKILLS[k]) SKILLS[k] = SKILLS[base];
+});
+
+// ── Modal color map ───────────────────────────────────────────────────────
+const SECTION_COLOR = {
+  'aoxia':'var(--blue)', 'tianxia':'var(--green)',
+  'longxia':'var(--purple)', 'maixia':'var(--orange)', 'huxia':'var(--red)'
+};
+const BADGE_STYLE = {
+  'aoxia':  'color:var(--blue);background:var(--blue-dim)',
+  'tianxia':'color:var(--green);background:var(--green-dim)',
+  'longxia':'color:var(--purple);background:var(--purple-dim)',
+  'maixia': 'color:var(--orange);background:var(--orange-dim)',
+  'huxia':  'color:var(--red);background:var(--red-dim)',
+};
+
+function getSectionId(card) {
+  let el = card.parentElement;
+  while (el && el.tagName !== 'SECTION') el = el.parentElement;
+  return el ? el.id : 'aoxia';
+}
+
+function showDetail(card) {
+  const key = card.dataset.key;
+  const data = SKILLS[key];
+  if (!data) return;
+  const secId = getSectionId(card);
+  const color = SECTION_COLOR[secId] || 'var(--blue)';
+  const badgeStyle = BADGE_STYLE[secId] || '';
+
+  document.getElementById('mName').textContent = data.name;
+  const badge = document.getElementById('mBadge');
+  badge.textContent = data.badge;
+  badge.style.cssText = badgeStyle;
+  document.getElementById('mDesc').textContent = data.desc;
+  const detail = document.getElementById('mDetail');
+  detail.innerHTML = data.detail.split('\n').map(l => l.startsWith('•') ? `<div style="margin-bottom:.3rem">${l}</div>` : l).join('');
+  document.getElementById('mCopy').textContent = data.copy;
+
+  const btn = document.getElementById('copyBtn');
+  btn.style.cssText = `background:${color.replace(')',',0.12)')};border-color:${color.replace(')',',0.3)')};color:${color}`;
+  btn.textContent = '复制';
+  btn.classList.remove('copied');
+
+  document.getElementById('modalOverlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function hideModal() {
+  document.getElementById('modalOverlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+function closeModal(e) {
+  if (e.target === document.getElementById('modalOverlay')) hideModal();
+}
+
+function doCopy() {
+  const text = document.getElementById('mCopy').textContent;
+  navigator.clipboard.writeText(text).then(() => {
+    const btn = document.getElementById('copyBtn');
+    btn.textContent = '已复制 ✓';
+    btn.classList.add('copied');
+    setTimeout(() => { btn.textContent = '复制'; btn.classList.remove('copied'); }, 2000);
+  });
+}
+
+document.addEventListener('keydown', e => { if (e.key === 'Escape') hideModal(); });
+document.querySelectorAll('.card').forEach(c => c.addEventListener('click', () => showDetail(c)));
+</script>
+</body>
+</html>
